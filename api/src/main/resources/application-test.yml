@@ -1,0 +1,49 @@
+dynamic:
+  host: #host
+
+spring:
+  application:
+    name: authority
+  # redis配置信息
+  redis:
+    host: ${dynamic.host}
+    port: 6379
+    timeout: 10000
+    database: 0
+    jedis:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1
+  #数据库配置信息
+  datasource:
+    # 指定sql脚本
+    schema: classpath:schema-test.sql
+    #初始化模式：始终执行
+    initialization-mode: always
+    # JDBC配置
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://${dynamic.host}:3306/authority_test?createDatabaseIfNotExist=true&
+    useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8"
+    username: root
+    password: 123456
+  config:
+    activate:
+      on-profile: test
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+#角色资源上限
+role:
+  resource:
+    limit: 3
+
+schema: authority-test
+
+swagger2:
+  enable: true
